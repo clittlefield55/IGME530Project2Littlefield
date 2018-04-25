@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang='en'>
+  <head>
+    <title>Project 2: L-System Visualizer in THREE.js</title>
+    <style> body { margin:0 } </style>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/three.js/88/three.min.js'></script>
+    <script src='turtle.js'></script>
+    <script src='project2.js'></script>
+    <style>
+      div {
+          text-align: center;
+      }
+      body { margin: 0; }
+    </style>
+  </head>
+  <body>
+      <div>
+      <select id="preset">
+          <option value='{"rule": "[FZFZF]zFzFzF", "theta": 30 , "repeats": 5}'>Preset 1</option>
+          <option value='{"rule": "FzFZFzFZFzFZFzF", "theta": 30 , "repeats": 5}'>Preset 2</option>
+          <option value='{"rule": "[FZfZF]zzFFF", "theta": 30, "repeats": 5}'>Preset 3</option>
+          <option value='{"rule": "FFFZZZFFFzzzFFFZZZFFF", "theta": 30, "repeats": 3}'>Preset 4</option>
+          <option value='{"rule": "FFFFFZZZZZFFFFF", "theta": 30, "repeats": 3}'>Preset 5</option>
+      </select>
+      F = <input id="rulesField" type="text" name="rules"><input id="updateButton" type="submit" value="Update">
+      <label for="repeats" id="repeatLabel">Repeats: 5</label>
+      <input type="range" min="1" max="5" value="5" class="slider" id="repeats">
+      <label for="theta" id="thetaLabel">&thetasym;: 30&#176;</label>
+      <input type="range" min="0" max="360" value="30" class="slider" id="theta">
+      <input id="animButton" type="submit" value="Animate">
+      </div>
+  </body>
+</html>
