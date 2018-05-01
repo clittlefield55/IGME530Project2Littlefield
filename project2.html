@@ -7,27 +7,57 @@
     <script src='turtle.js'></script>
     <script src='project2.js'></script>
     <style>
-      div {
+        div {
+          position:fixed;
+          top: 0;
+          color: white;
           text-align: center;
-      }
-      body { margin: 0; }
+        }
+        body { margin: 0; }
+        #rulesDiv{
+          width: 100%;
+        }
+        #colorDiv{
+          left: 0;
+        }
+        #fxDiv{
+          right: 0;
+        }
+        #redSlider, #greenSlider, #blueSlider{
+          display: none;
+        }
     </style>
   </head>
   <body>
-      <div>
-      <select id="preset">
+    <div id="rulesDiv">
+        <select id="preset">
           <option value='{"rule": "[FZFZF]zFzFzF", "theta": 30 , "repeats": 5}'>Preset 1</option>
           <option value='{"rule": "FzFZFzFZFzFZFzF", "theta": 30 , "repeats": 5}'>Preset 2</option>
           <option value='{"rule": "[FZfZF]zzFFF", "theta": 30, "repeats": 5}'>Preset 3</option>
-          <option value='{"rule": "FFFZZZFFFzzzFFFZZZFFF", "theta": 30, "repeats": 3}'>Preset 4</option>
+          <option value='{"rule": "F[FyZ]FFz[ZYF]", "theta": 30, "repeats": 5}'>Preset 4</option>
           <option value='{"rule": "FFFFFZZZZZFFFFF", "theta": 30, "repeats": 3}'>Preset 5</option>
-      </select>
-      F = <input id="rulesField" type="text" name="rules"><input id="updateButton" type="submit" value="Update">
-      <label for="repeats" id="repeatLabel">Repeats: 5</label>
-      <input type="range" min="1" max="5" value="5" class="slider" id="repeats">
-      <label for="theta" id="thetaLabel">&thetasym;: 30&#176;</label>
-      <input type="range" min="0" max="360" value="30" class="slider" id="theta">
-      <input id="animButton" type="submit" value="Animate">
+          <option value='{"rule": "FF[FXFY]FzzF", "theta": 8, "repeats": 5}'>Preset 6</option>
+          <option value='{"rule": "FFFZZZFFFzzzFFFZZZFFF", "theta": 30, "repeats": 3}'>CPU Killer</option>
+        </select>
+        F = <input id="rulesField" type="text" name="rules">
+        <input id="updateButton" type="submit" value="Update">
+        <input id="animButton" type="submit" value="Animate">
+    </div>
+    <div id="colorDiv">
+        <label for="redSlider" id="redLabel">R:</label>
+        <input type="range" min="0" max="255" value="255" class="slider" id="redSlider"><br />
+        <label for="greenSlider" id="greenLabel">G:</label>
+        <input type="range" min="0" max="255" value="255" class="slider" id="greenSlider"><br />
+        <label for="blueSlider" id="blueLabel">B:</label>
+        <input type="range" min="0" max="255" value="255" class="slider" id="blueSlider"><br />
+        Rainbow: <input id="rainbowButton" type="checkbox" checked="true">
+      </div>
+      <div id="fxDiv">
+        <label for="repeats" id="repeatLabel">Repeats: 5</label>
+        <input type="range" min="1" max="5" value="5" class="slider" id="repeats"><br />
+        <label for="theta" id="thetaLabel">&thetasym;: 30&#176;</label>
+        <input type="range" min="0" max="360" value="30" class="slider" id="theta"><br />
+        <input id="camButton" type="submit" value="Reset Camera">
       </div>
   </body>
 </html>

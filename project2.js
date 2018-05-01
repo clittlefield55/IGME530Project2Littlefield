@@ -38,9 +38,14 @@ window.app = {
     this.rulesForm = document.getElementById('rulesField');
     this.button = document.getElementById('updateButton');
     this.animButton = document.getElementById('animButton');
+    this.camButton = document.getElementById('camButton');
     this.rSlider = document.getElementById('repeats');
     this.tSlider = document.getElementById('theta');
     this.select = document.getElementById('preset');
+    this.red = document.getElementById('redSlider');
+    this.green = document.getElementById('greenSlider');
+    this.blue = document.getElementById('blueSlider');
+    this.rainbowButton = document.getElementById('rainbowButton');
       
     this.rulesForm.value = this.rules['F'];
 
@@ -54,7 +59,7 @@ window.app = {
         if(app.rulesForm.value != ''){
             app.rules['F'] = app.rulesForm.value;
             app.clear();
-            app.calculateLSystem()
+            app.calculateLSystem();
             app.runTurtle();
         }
     });
@@ -63,8 +68,27 @@ window.app = {
             app.animating = true;
     });
       
+    this.rainbowButton.addEventListener('click', function(){
+            app.turtle.rainbow = app.rainbowButton.checked;
+        
+            if(app.rainbowButton.checked){
+                app.red.style.display = "none";
+                app.green.style.display = "none";
+                app.blue.style.display = "none";
+            }
+            else{
+                app.red.style.display = "inline";
+                app.green.style.display = "inline";
+                app.blue.style.display = "inline";
+            }
+    });
+      
+    this.camButton.addEventListener('click', this.resetCamera);
     this.rSlider.addEventListener('change', this.updateTimes);
     this.tSlider.addEventListener('change', this.updateTheta);
+    this.red.addEventListener('change', this.updateColor);
+    this.green.addEventListener('change', this.updateColor);
+    this.blue.addEventListener('change', this.updateColor);
     this.select.addEventListener('change', this.loadPreset);
 
     // camera is a bit more involved...
@@ -80,19 +104,23 @@ window.app = {
     
     onkeydown = function(event){
         if(event.keyCode == 87){
-           app.camera.position.z -= app.cameraSpeed 
+           //app.camera.position -= app.cameraSpeed 
+           app.camera.translateOnAxis(new THREE.Vector3(0,0,1), -(app.cameraSpeed))  
         }
         
         if(event.keyCode == 83){
-           app.camera.position.z += app.cameraSpeed 
+           //app.camera.position += app.cameraSpeed 
+           app.camera.translateOnAxis(new THREE.Vector3(0,0,1), app.cameraSpeed)  
         }
         
         if(event.keyCode == 65){
-           app.camera.position.x -= app.cameraSpeed
+           //app.camera.position.x -= app.cameraSpeed
+           app.camera.rotateOnAxis(new THREE.Vector3(0,1,0), app.toRadians(5))
         }
         
         if(event.keyCode == 68){
-           app.camera.position.x += app.cameraSpeed
+           //app.camera.position.x += app.cameraSpeed
+           app.camera.rotateOnAxis(new THREE.Vector3(0,1,0), app.toRadians(-5))
         }
         
         if(event.keyCode == 69){
@@ -177,8 +205,8 @@ window.app = {
         app.rules['F'] = data.rule;
         app.rulesForm.value = data.rule;
         app.rSlider.value = data.repeats;
-        app.updateTimes();
         app.tSlider.value = data.theta;
+        app.updateTimes();
         app.updateTheta();
         app.calculateLSystem();
         app.clear();
@@ -186,28 +214,27 @@ window.app = {
   },
       
   updateTimes() {
-      if(app.animating){
-            app.animating = false;
-            app.animIndex = 0;
-            app.turtle.reset();
-      }
         app.times = app.rSlider.value;
         document.getElementById("repeatLabel").innerHTML = "Repeats: " + app.rSlider.value;
-        app.calculateLSystem();
-        app.clear();
-        app.runTurtle();
   },
     
   updateTheta() {
-      if(app.animating){
-            app.animating = false;
-            app.animIndex = 0;
-            app.turtle.reset();
-      }
         app.angle = app.toRadians(app.tSlider.value);
         document.getElementById("thetaLabel").innerHTML = "&thetasym;:" + app.tSlider.value + "&#176;";
-        app.clear();
-        app.runTurtle();
+  },
+  
+  updateColor(){
+      var color = "rgb(" + this.red.value + ", " + this.green.value + ", " + this.blue.value + ")";
+      app.turtle.lineMaterial.setValues({color: color});
+  },
+    
+  resetCamera(){
+      app.camera.position.x = 0;
+      app.camera.position.y = 0;
+      app.camera.position.z = 200;
+      app.camera.rotation.x = 0;
+      app.camera.rotation.y = 0;
+      app.camera.rotation.z = 0;
   },
 
   calculateLSystem(){
@@ -237,11 +264,9 @@ window.app = {
   },
     
   clear(){
-    for (let i = this.scene.children.length - 1; i >= 0; i--) {
-        if(this.scene.children[i].isLine){
-            this.scene.remove(this.scene.children[i]);
-        }  
-    }  
+    this.scene = new THREE.Scene();
+    this.turtle.scene = this.scene;
+    this.updateColor();
   }
 }
 
